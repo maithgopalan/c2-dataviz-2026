@@ -11,8 +11,8 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 1 
  {{< schedule >}}
 
-{{< week-odd "01-08" >}}
-  {{< description "Introduction to the course and Github Repos" "Introductions and the weekly schedule of topics. I'll briefly talk about git and plead with you to watch a recorded lecture and read on git workflows. We'll then spend the rest of the day working on our first lab that includes (a) connecting to a remote course data repository, and (b) making queries to get the data you want." >}}
+{{< week-odd "01-07" >}}
+  {{< description "Introduction to the course and Github Repos" "Introductions and the weekly schedule of topics. I'll briefly talk about git and git workflows to refresh your memory - but hoping that most of you are famiiliar with this from EDLD 651. We'll then spend the rest of the day working on our first lab that showcases your basic mastery of github workflow." >}}
   {{< wrap >}}
 {{< slides "w1" >}}
 {{< /wrap >}}
@@ -25,7 +25,6 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< due "lab-1" "Lab 1" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< readings "video" "https://www.youtube.com/watch?v=X7Cl3lwxXi4" "" >}}
 {{< readings "other" "https://docs.github.com/en/get-started/start-your-journey/about-github-and-git" "" >}}
 {{< readings "happygit" "https://happygitwithr.com/git-branches.html" "" >}}
 {{< /wrap >}}
@@ -38,7 +37,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 2 
  {{< schedule >}}
 
-{{< week-even "01-15" >}}
+{{< week-even "01-14" >}}
   {{< description "Intro to visualizations and Quick refresher for R Markdown/R Studio" "We will look at different types of visualizations with a specific focus on continuous variables. We will explore how different choices with these visualizations can change your inferences. We will re-visit string data more specifically and then end with a quick R Markdown refresher. We will then practice these topics with our second lab." >}}
   {{< wrap >}}
 {{< slides "w2" >}}
@@ -63,16 +62,14 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 3 
  {{< schedule >}}
 
-{{< week-odd "01-22" >}}
-  {{< description "Visual processing and perceptual rankings" "Aesthetic mappings and visual encodings of data. The data-ink ratio and the pitfall of rigid rules. Some general rule of thumb recommendations. For the lab, we will use ggplot2 to replicate plots using [gapminder] (https://cran.r-project.org/web/packages/gapminder/readme/README.html) ![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pngmart.com%2Ffiles%2F13%2FBlack-Lives-Matter-Fist-Transparent-PNG.png&f=1&nofb=1)" >}}
+{{< week-odd "01-21" >}}
+  {{< description "Guest Lecture by Saloni Dattani + Visual processing and perceptual rankings" "First hour of this class is a uest lecture by Dr. Saloni Dattani from Our World in Data (one of the best websites for data and visualizations!). We will then shift to a discussion on Aesthetic mappings and visual encodings of data. The data-ink ratio and the pitfall of rigid rules. Some general rule of thumb recommendations. For the lab, we will use ggplot2 to replicate plots using [gapminder](https://cran.r-project.org/web/packages/gapminder/readme/README.html) ![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pngmart.com%2Ffiles%2F13%2FBlack-Lives-Matter-Fist-Transparent-PNG.png&f=1&nofb=1)" >}}
   {{< wrap >}}
 {{< slides "w3" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< assigned "lab-ps2" "Lab PS2" >}}
 {{< assigned "lab-3" "Lab 3" >}}
-
-
 {{< /wrap >}}
   {{< wrap >}}
 {{< due "" "" >}}
@@ -85,6 +82,7 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< readings "dataviz" "proportional-ink.html" "17" >}}
 {{< readings "jschwab" "https://www.google.com/books/edition/Better_Data_Visualizations/A7jeDwAAQBAJ?hl=en&gbpv=1" "1" >}}
 {{< readings "jschwab" "https://github.com/maithgopalan/c2-dataviz-2025/blob/main/static/readings_other/jschwabchap2.pdf" "2" >}}
+{{< readings "other" "https://www.scientificdiscovery.dev/p/salonis-guide-to-data-visualization" "Dattani Guide" >}}
 
   {{< /wrap >}}
   {{< wrap >}}
@@ -96,8 +94,8 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 4 
  {{< schedule >}}
 
-{{< week-even "01-29" >}}
-  {{< description "Use of Color and Inclusive Design Principles that go beyond Compliance (e.g., Alt-texts, inclusive design)" "We will discuss the three primary means by which color can aid interpretation. Color blindness considerations and color palettes that work well for the visualy impaired will be discussed along with the Common pitfalls with the use of color in the lab. We will also have a very special guest visit." >}}
+{{< week-even "01-28" >}}
+  {{< description "Use of Color and Inclusive Design Principles that go beyond Compliance (e.g., Alt-texts, inclusive design)" "We will discuss the three primary means by which color can aid interpretation. Color blindness considerations and color palettes that work well for the visualy impaired will be discussed along with the Common pitfalls with the use of color in the lab." >}}
   {{< wrap >}}
 {{< slides "w4" >}}
 {{< /wrap >}}
@@ -122,7 +120,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 5 
  {{< schedule >}}
 
-{{< week-odd "02-05" >}}
+{{< week-odd "02-04" >}}
   {{< description "Visualizations for comparing categories" "We will learn to use various refinements to plots to enable better communication of various changes in your data. We'll discuss annotating plots, aspect ratios, scales, and wrap up theming" >}}
   {{< wrap >}}
 {{< slides "w5" >}}
@@ -149,7 +147,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 6 
  {{< schedule >}}
 
-{{< week-even "02-12" >}}
+{{< week-even "02-11" >}}
   {{< description "Wrap up week 5 + Intro to Flexdashboard" "I will introduce building flexboards" >}}
   {{< wrap >}}
 {{< slides "w6" >}}
@@ -178,7 +176,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 7 
  {{< schedule >}}
 
-{{< week-odd "02-19" >}}
+{{< week-odd "02-18" >}}
   {{< description "Deployment for websites" "Intro to [{distill}](https://rstudio.github.io/distill), which help you create relatively simple yet customizable blogs, optimized for scientific communication">}}
   {{< wrap >}}
 {{< slides "w7" >}}
@@ -206,7 +204,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 8 
  {{< schedule >}}
 
-{{< week-even "02-26" >}}
+{{< week-even "02-25" >}}
   {{< description "Tables and Visualizations for Geospatial Data" "We will focus primarily on two packages for creating tables: [{gt}](https://gt.rstudio.com) for static tables, and [{reactable}](https://glin.github.io/reactable/index.html) for interactive tables. We will also discuss the differences between vector and raster data, producing basic maps, getting data for producing different types of maps, and understandin the basics of the R geospatial ecosystem (which is consistently and rapidly evolving)" >}}
   {{< wrap >}}
 {{< slides "w8" >}}
@@ -233,7 +231,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 9 
  {{< schedule >}}
 
-{{< week-odd "03-05" >}}
+{{< week-odd "03-04" >}}
   {{< description "Wrap up Websites, presentations, and some customization with CSS" "Wrap up building (static) data dashboards with the [{flexdashboard}](https://rmarkdown.rstudio.com/flexdashboard/) package. Finally, we will discuss customization with CSS, and changing the fonts in both web-based documents, as well as ggplot2 plots." >}}
   {{< wrap >}}
 {{< slides "w9" >}}
@@ -257,7 +255,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 10 
  {{< schedule >}}
 
-{{< week-even "03-12" >}}
+{{< week-even "03-11" >}}
   {{< description "Loose ends and presentations" "We cover a lot in this course and so there is some space here to dive deeper into topics we didn't cover thouroughly enough, or additional topics as suggested by you and your peers. Each group will also present on their data visualization portfolios and discuss their journey, including high points and challenges faced along the way." >}}
   {{< wrap >}}
 {{< slides "" >}}
@@ -281,8 +279,8 @@ Each of the below links to the full book, except the last one. I will upload cha
  ## Week 11 
  {{< schedule >}}
 
-{{< week-odd "03-19" >}}
-  {{< description "Finals Week" "Your final project is due before midnight" >}}
+{{< week-odd "03-17" >}}
+  {{< description "Finals Week" "Your final project is due at midnight on 3/17" >}}
   {{< wrap >}}
 {{< slides "" >}}
 {{< /wrap >}}
