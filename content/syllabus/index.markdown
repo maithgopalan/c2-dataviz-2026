@@ -9,9 +9,9 @@ toc: true
 
 Below are the meeting times for our class
 
--   **Term:** Winter 2025
+-   **Term:** Winter 2026
 -   **Time:** Wednesdays, 2:00-4:50
--   **Classroom:** HEDCO Education Building 144
+-   **Classroom:** Lokey Education Building 115
 -   **Instructor:** Maithreyi Gopalan, PhD
     -   *office:* 102B Lokey Education Building
     -   *email:* (preferred contact method) <mgopalan@uoregon.edu>
@@ -86,9 +86,9 @@ Generally, you can choose to work on any and all labs individually or in small g
 
 ### Lab Problem Sets (60 points; 30%)
 
-There three lab problem sets, which are essentially an extended labs, with two exceptions:
+There are three lab problem sets, which are essentially an extended labs, with two exceptions:
 
--   No time will be designated during class for the lab problem set completion
+-   No time will be designated during class for the lab problem set completion necessarily
 -   They will be scored on a correct/incorrect basis (not on effort).
 
 These are due Monday of the week it’s listed on the syllabus.
@@ -345,7 +345,7 @@ It is important to exhaust the administrative remedies available to you includin
 
 ### Grievance Policy
 
-A student or group of students of the College of Education may appeal decisions or actions pertaining to admissions, programs, evaluation of performance and program retention and completion. Students who decide to file a grievance should follow University student grievance procedures (https://policies.uoregon.edu/grievance-procedures) and/or consult with the College Associate Dean for Academic Affairs (Sylvia Thompson, (541) 346-2483  sthomps5@uoregon.edu).
+A student or group of students of the College of Education may appeal decisions or actions pertaining to admissions, programs, evaluation of performance and program retention and completion. Students who decide to file a grievance should follow University student grievance procedures (https://policies.uoregon.edu/grievance-procedures) and/or consult with the College Associate Dean for Academic Affairs (Edward M. Olivos, (541) 346-2983  emolivos@uoregon.edu).
 ### In Case of Inclement Weather
 
 In the event the University operates on a curtailed schedule or closes, UO media relations will notify the Eugene-Springfield area radio and television stations as quickly as possible. In addition, a notice regarding the university’s schedule will be posted on the UO main home page (in the “News” section) at http://www.uoregon.edu. Additional information is available at http://hr.uoregon.edu/policy/weather.html.
