@@ -15,6 +15,7 @@ Each of the below links to the full book, except the last one. I will upload cha
   {{< description "Introduction to the course and Github Repos" "Introductions and the weekly schedule of topics. I'll briefly talk about git and git workflows to refresh your memory - but hoping that most of you are famiiliar with this from EDLD 651. We'll then spend the rest of the day working on our first lab that showcases your basic mastery of github workflow." >}}
   {{< wrap >}}
 {{< slides "w1" >}}
+{{< slides "github_workflow_slides" >}}
 {{< /wrap >}}
   {{< wrap >}}
 
