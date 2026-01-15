@@ -42,6 +42,7 @@ Each of the below links to the full book, except the last one. I will upload cha
   {{< description "Intro to visualizations and Quick refresher for R Markdown/R Studio" "We will look at different types of visualizations with a specific focus on continuous variables. We will explore how different choices with these visualizations can change your inferences. We will re-visit string data more specifically and then end with a quick R Markdown refresher. We will then practice these topics with our second lab." >}}
   {{< wrap >}}
 {{< slides "w2" >}}
+{{< slides "scorecard_api_inclass" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< assigned "lab-2" "Lab2" >}}
