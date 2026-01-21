@@ -1,0 +1,231 @@
+---
+title: "Troubleshooting File Paths in R Projects"
+author: "Maithreyi Gopalan"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+## Understanding `here::here()`
+
+The `here` package finds your project root (where your `.Rproj` file lives) and builds paths from there, regardless of where your script is located.
+
+```{r}
+library(here)
+
+# Check where here thinks your project root is
+here()
+
+# Build a path from project root
+here("data", "myfile.csv")  # equivalent to "project_root/data/myfile.csv"
+```
+
+---
+
+## Common Problems & Solutions
+
+### Problem 1: "Could not find associated project in working directory"
+
+**Symptoms:**
+```{r}
+here::here()
+# Error: Could not find associated project...
+```
+
+**Diagnosis:**
+```{r}
+# Check current working directory
+getwd()
+
+# Check if .Rproj file exists in your directory tree
+list.files(pattern = "\\.Rproj$", recursive = TRUE)
+```
+
+**Solutions:**
+
+1. Open your project by clicking the `.Rproj` file (not just opening R/RStudio)
+2. Create a `.Rproj` file: File → New Project → Existing Directory
+3. Manually set the root with `set_here()` in a `.here` file (advanced)
+
+---
+
+### Problem 2: File not found even with `here()`
+
+**Symptoms:**
+```{r}
+read_csv(here("data", "file.csv"))
+# Error: 'data/file.csv' does not exist
+```
+
+**Diagnosis checklist:**
+```{r}
+# 1. Verify your project root
+here()
+
+# 2. Check if the file exists where you think it does
+file.exists(here("data", "file.csv"))
+
+# 3. List what's actually in that directory
+list.files(here("data"))
+
+# 4. Search for the file in your project
+list.files(pattern = "file.csv", recursive = TRUE, full.names = TRUE)
+
+# 5. Check for case sensitivity (Mac/Linux care, Windows doesn't)
+# "File.csv" ≠ "file.csv" on Mac/Linux
+```
+
+**Common fixes:**
+
+- File is in a different location than you thought
+- Typo in filename
+- Case sensitivity issue
+- File extension is different (`.xlsx` vs `.csv`)
+
+---
+
+### Problem 3: R Markdown in subdirectories
+
+**Symptoms:**
+Your code works in the console but breaks when you knit an Rmd file.
+
+**Why this happens:**
+When you knit, R Markdown temporarily changes the working directory to where the `.Rmd` file lives.
+
+**Solution:**
+Always use `here()` for file paths in Rmd files:
+
+```{r}
+# ❌ DON'T use relative paths from Rmd location
+read_csv("../../data/file.csv")  
+
+# ✅ DO use here() - works from anywhere
+read_csv(here("data", "file.csv"))
+```
+
+**For HTML dependencies in Rmd YAML:**
+
+```yaml
+output:
+  html_document:
+    includes:
+      in_header: !expr here::here("scripts", "load-feather.html")
+```
+
+---
+
+### Problem 4: Writing files
+
+**Diagnosis:**
+```{r}
+# Check if the directory exists
+dir.exists(here("output"))
+
+# Create it if needed
+dir.create(here("output"), showWarnings = FALSE, recursive = TRUE)
+```
+
+**Best practice:**
+```{r}
+# Always create directories before writing
+output_dir <- here("output", "plots")
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+
+ggsave(file.path(output_dir, "myplot.png"))
+```
+
+---
+
+## General Troubleshooting Workflow
+
+```{r}
+# 1. Where am I?
+getwd()
+here()
+
+# 2. What's my project structure?
+fs::dir_tree(here())  # requires fs package
+# or
+list.files(recursive = TRUE)
+
+# 3. Can R see my file?
+file.exists(here("path", "to", "file.csv"))
+
+# 4. What files ARE in that directory?
+list.files(here("path", "to"))
+
+# 5. Find the file anywhere in project
+list.files(pattern = "myfile", recursive = TRUE, full.names = TRUE)
+```
+
+---
+
+## Alternative: Base R file paths
+
+If you don't want to use `here`, use `file.path()` for cross-platform compatibility:
+
+```{r}
+# ✅ Cross-platform safe
+file.path("data", "subdir", "file.csv")
+
+# ❌ Windows-only (breaks on Mac/Linux)
+"data\\subdir\\file.csv"
+
+# ❌ Can break on Windows
+"data/subdir/file.csv"  # usually works but not guaranteed
+```
+
+---
+
+## Best Practices
+
+1. **Always use an RStudio Project** (`.Rproj` file)
+2. **Use `here()` for file paths** in scripts and Rmd files
+3. **Use relative paths from project root**, not absolute paths like `"C:/Users/..."`
+4. **Create output directories explicitly** before writing files
+5. **Check file existence** before reading: `stopifnot(file.exists(here("data", "file.csv")))`
+6. **Be mindful of case sensitivity** on Mac/Linux
+
+---
+
+## Quick Reference
+
+```{r}
+# Essential commands
+here::here()                          # Find project root
+here::here("folder", "file.csv")      # Build path from root
+file.exists(here("path"))             # Check if file exists
+dir.exists(here("folder"))            # Check if directory exists
+list.files(here("folder"))            # List directory contents
+dir.create(here("output"), recursive = TRUE)  # Create directory
+```
+
+---
+
+## Practice Exercise
+
+Try running this diagnostic code in your own project:
+
+```{r eval=TRUE}
+cat("=== Project Diagnostics ===\n")
+cat("Working directory:", getwd(), "\n")
+cat("Project root (here):", here::here(), "\n\n")
+
+cat("=== Project Structure (top level) ===\n")
+print(list.files(here::here()))
+
+cat("\n=== Looking for common data directories ===\n")
+common_dirs <- c("data", "Data", "input", "raw_data", "output")
+for (d in common_dirs) {
+  if (dir.exists(here::here(d))) {
+    cat("✓ Found:", d, "\n")
+  }
+}
+```

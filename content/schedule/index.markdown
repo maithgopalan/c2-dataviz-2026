@@ -65,7 +65,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  {{< schedule >}}
 
 {{< week-odd "01-21" >}}
-  {{< description "Guest Lecture by Saloni Dattani + Visual processing and perceptual rankings" "First hour of this class is a uest lecture by Dr. Saloni Dattani from Our World in Data (one of the best websites for data and visualizations!). We will then shift to a discussion on Aesthetic mappings and visual encodings of data. The data-ink ratio and the pitfall of rigid rules. Some general rule of thumb recommendations. For the lab, we will use ggplot2 to replicate plots using [gapminder](https://cran.r-project.org/web/packages/gapminder/readme/README.html) ![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pngmart.com%2Ffiles%2F13%2FBlack-Lives-Matter-Fist-Transparent-PNG.png&f=1&nofb=1)" >}}
+  {{< description "Guest Lecture by Saloni Dattani + Visual processing and perceptual rankings" "First hour of this class is a uest lecture by Dr. Saloni Dattani from Our World in Data (one of the best websites for data and visualizations!). We will then shift to a discussion on Aesthetic mappings and visual encodings of data. The data-ink ratio and the pitfall of rigid rules. Some general rule of thumb recommendations. ![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pngmart.com%2Ffiles%2F13%2FBlack-Lives-Matter-Fist-Transparent-PNG.png&f=1&nofb=1)" >}}
   {{< wrap >}}
 {{< slides "w3" >}}
 {{< /wrap >}}
@@ -74,7 +74,7 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< assigned "lab-3" "Lab 3" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< due "" "" >}}
+{{< due "Lab-3" "Lab 3" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< readings "socviz" "lookatdata.html" "1" >}}
@@ -85,7 +85,6 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< readings "jschwab" "https://www.google.com/books/edition/Better_Data_Visualizations/A7jeDwAAQBAJ?hl=en&gbpv=1" "1" >}}
 {{< readings "jschwab" "https://github.com/maithgopalan/c2-dataviz-2025/blob/main/static/readings_other/jschwabchap2.pdf" "2" >}}
 {{< readings "other" "https://www.scientificdiscovery.dev/p/salonis-guide-to-data-visualization" "Dattani Guide" >}}
-
   {{< /wrap >}}
   {{< wrap >}}
 {{< lecture "" >}}
@@ -97,7 +96,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  {{< schedule >}}
 
 {{< week-even "01-28" >}}
-  {{< description "Use of Color and Inclusive Design Principles that go beyond Compliance (e.g., Alt-texts, inclusive design)" "We will discuss the three primary means by which color can aid interpretation. Color blindness considerations and color palettes that work well for the visualy impaired will be discussed along with the Common pitfalls with the use of color in the lab." >}}
+  {{< description "ONLINE CLASS: Use of Color and Inclusive Design Principles that go beyond Compliance (e.g., Alt-texts, inclusive design)" "We will discuss the three primary means by which color can aid interpretation. Color blindness considerations and color palettes that work well for the visualy impaired will be discussed along with the Common pitfalls with the use of color in the lab." >}}
   {{< wrap >}}
 {{< slides "w4" >}}
 {{< /wrap >}}
