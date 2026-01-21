@@ -26,9 +26,9 @@ You have two replication suggestions from Saloni
 
 ## Tasks
 
-### 1. Replicate as is (Fork repo and replicate - No pull requests)
+* 1. Replicate as is (Fork repo and replicate - No pull requests)
 
-### 2. Bonus points: Create a (free) account on the Human Mortality Database to update the data to beyond 2019, for any one new country not included in the second chart.
+* 2. Bonus points: Create a (free) account on the Human Mortality Database to update the data to beyond 2019, for any one new country not included in the second chart.
 
 ## Finishing up 
 When you have finished the above, upload your rendered (knit) HTML/pdf file to canvas.
