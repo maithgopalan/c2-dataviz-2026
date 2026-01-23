@@ -68,6 +68,7 @@ Each of the below links to the full book, except the last one. I will upload cha
   {{< description "Guest Lecture by Saloni Dattani + Visual processing and perceptual rankings" "First hour of this class is a uest lecture by Dr. Saloni Dattani from Our World in Data (one of the best websites for data and visualizations!). We will then shift to a discussion on Aesthetic mappings and visual encodings of data. The data-ink ratio and the pitfall of rigid rules. Some general rule of thumb recommendations. ![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pngmart.com%2Ffiles%2F13%2FBlack-Lives-Matter-Fist-Transparent-PNG.png&f=1&nofb=1)" >}}
   {{< wrap >}}
 {{< slides "w3" >}}
+{{< slides "troubleshooting_file_paths_1" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< assigned "lab-ps2" "Lab PS2" >}}
