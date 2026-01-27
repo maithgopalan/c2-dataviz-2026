@@ -19,7 +19,7 @@ Each lab problem set is worth 20 points. Please do not turn in partial work. Ins
 | Lab Problem Set|Date Assigned   |Date Due         |Topic                                                                                     |
 |---:|:---------------|:----------------|:-----------------------------------------------------------------------------------------|
 |   1|Wed, January 14  |Fri, January 23 |[R markdowns, download data, set api keys, basic plots, and working with strings/text data](../lab-ps1) |
-|   2|Wed, January 21 |Mon, Feb 9       |[Visual perception & reproducing plots](../lab-ps2)                                         |
+|   2|Wed, January 28 |Mon, Feb 16       |[Visual perception & reproducing plots](../lab-ps2)                                         |
 |   3|Wed, February 04|Mon, February 23 |[Uses of color to enhance interpretability](../lab-ps3)                                     |
 
 {{< /bootstrap-table >}}
@@ -45,7 +45,6 @@ The proposal process is a chance for you to get feedback  from me on your plans 
 
 * Research questions (probably 1-3)
 * Preliminary ideas (even hand sketches) of different visualizations
-* Some documentation that you have played with the course data some
 * Names of the datasets you're thinking of using and what keys you'll need for joining the data
 * Identification of the intended audience for each visualization 
   + Note, you might consider displaying the same data/relations more than 
