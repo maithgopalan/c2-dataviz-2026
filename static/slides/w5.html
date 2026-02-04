@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Comparing Categories - Refinements</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Maithreyi Gopalan" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="new.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Comparing Categories - Refinements
+]
+.author[
+### Maithreyi Gopalan
+]
+.date[
+### Week 5
+]
+
+---
+
+
+
+
+
+layout: true
+
+  &lt;script&gt;
+    feather.replace()
+  &lt;/script&gt;
+  
+  &lt;div class="slides-footer"&gt;
+  &lt;span&gt;
+  
+  &lt;a class = "footer-icon-link" href = "https://github.com/maithgopalan/c2-dataviz-2026/raw/main/static/slides/w5.pdf"&gt;
+    &lt;i class = "footer-icon" data-feather="download"&gt;&lt;/i&gt;
+  &lt;/a&gt;
+  
+  &lt;a class = "footer-icon-link" href = "https://dataviz-win2026.netlify.app/slides/w5.html"&gt;
+    &lt;i class = "footer-icon" data-feather="link"&gt;&lt;/i&gt;
+  &lt;/a&gt;
+  
+  &lt;a class = "footer-icon-link" href = "https://github.com/maithgopalan/c2-dataviz-2026"&gt;
+    &lt;i class = "footer-icon" data-feather="github"&gt;&lt;/i&gt;
+  &lt;/a&gt;
+  
+  &lt;/span&gt;
+  &lt;/div&gt;
+  
+
+---
+class: inverse-blue
+# Data viz in Wild
+
+Febe 
+
+Erika
+
+### Chen and Tongle later on today; Everett and Dodjivi on deck for next week
+
+---
+
+
+# Agenda 
+
+* Visualization for comparing categories - more considerations
+
+* Aspect ratios, scales, and labels
+
+* Annotations (most of the day)
+
+* Saving plots (pretty quick)
+
+* Compound figures 
+
+* Themes refresher (if time permits)
+
+* Review Lab 3 and Lab 4/Lab PS-2
+
+* Introduce Lab-PS3 quickly 
+
+* Lab 5
+
+
+---
+# Learning Objectives
+* Additional Considerations when visualizing/comparing categories including over time
+
+* Understand how to make a wide variety of tweaks to ggplot.
+
+* Understand common modifications to plots to make them more clear and reduce cognitive load
+
+  + And ways to implement them
+
+---
+class: inverse-orange middle
+# Comparing Categories: Core Concepts
+
+---
+# Why Compare Categories?
+
+* Categories are everywhere in data
+  + Demographics (race, gender, education level)
+  + Geographic units (states, countries, regions)
+  + Time periods (years, quarters, months)
+  + Experimental conditions or groups
+
+--
+
+* Key questions when comparing categories:
+  + Which category has the highest/lowest value?
+  + How different are the categories from each other?
+  + Are there patterns or trends across categories?
+  + How do distributions differ across categories?
+
+---
+# Strategies for Comparing Categories
+
+1. **Direct comparison**: Bar charts, dot plots, lollipop charts
+
+2. **Showing distributions**: Boxplots, violin plots, ridgeline plots
+
+3. **Multiple dimensions**: Faceting, small multiples
+
+4. **Proportions**: Stacked bars, treemaps, waffle charts
+
+5. **Ordering**: Alphabetical, by value, by time, by logic
+
+---
+# Ordering Categories Effectively
+
+
+
+``` r
+library(palmerpenguins)
+
+# Alphabetical (default)
+p1 &lt;- penguins %&gt;% 
+  drop_na(species) %&gt;% 
+  count(species) %&gt;% 
+  ggplot(aes(x = species, y = n)) +
+  geom_col(fill = "#25B6EE") +
+  labs(title = "Alphabetical ordering")
+p1
+```
+
+&lt;img src="w5_files/figure-html/ordering-example-1.png" width="720" /&gt;
+---
+# Ordering by Value
+
+
+``` r
+# Ordered by count
+p2 &lt;- penguins %&gt;% 
+  drop_na(species) %&gt;% 
+  count(species) %&gt;% 
+  mutate(species = fct_reorder(species, n)) %&gt;% 
+  ggplot(aes(x = n, y = species)) +
+  geom_col(fill = "#25B6EE") +
+  labs(title = "Ordered by value")
+
+p2
+```
+
+&lt;img src="w5_files/figure-html/ordering-by-value-1.png" width="720" /&gt;
+---
+# Side by Side Comparison
+
+
+``` r
+library(patchwork)
+p1 + p2
+```
+
+&lt;img src="w5_files/figure-html/ordering-comparison-1.png" width="864" /&gt;
+
+Which is easier to read?
+
+---
+# Cleveland Dot Plots
+
+Great alternative to bar charts when you have many categories
+
+
+``` r
+mpg %&gt;% 
+  group_by(manufacturer) %&gt;% 
+  summarize(mean_hwy = mean(hwy)) %&gt;% 
+  mutate(manufacturer = fct_reorder(manufacturer, mean_hwy)) %&gt;% 
+  ggplot(aes(x = mean_hwy, y = manufacturer)) +
+  geom_point(size = 4, color = "#0072B2") +
+  labs(x = "Mean Highway MPG",
+       y = NULL,
+       title = "Average Fuel Efficiency by Manufacturer")
+```
+
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-3-1.png" width="720" /&gt;
+---
+# Lollipop Charts
+
+Add visual connection to baseline
+
+
+``` r
+mpg %&gt;% 
+  group_by(manufacturer) %&gt;% 
+  summarize(mean_hwy = mean(hwy)) %&gt;% 
+  mutate(manufacturer = fct_reorder(manufacturer, mean_hwy)) %&gt;% 
+  ggplot(aes(x = mean_hwy, y = manufacturer)) +
+  geom_segment(aes(x = 0, xend = mean_hwy, 
+                   y = manufacturer, yend = manufacturer),
+               color = "black") +
+  geom_point(size = 4, color = "#0072B2") +
+  labs(x = "Mean Highway MPG",
+       y = NULL,
+       title = "Average Fuel Efficiency by Manufacturer") +
+       theme(axis.text.y = element_text(size = 8, hjust = 1))
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-4-1.png" width="720" /&gt;
+---
+# Comparing Distributions: Boxplots
+
+
+``` r
+ggplot(mpg, aes(x = class, y = hwy)) +
+  geom_boxplot(fill = "#25B6EE", alpha = 0.7) +
+  labs(x = "Vehicle Class",
+       y = "Highway MPG",
+       title = "Fuel Efficiency by Vehicle Class")
+```
+---
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-5-1.png" width="720" /&gt;
+---
+# Better: Ordered Boxplots
+
+
+``` r
+mpg %&gt;% 
+  mutate(class = fct_reorder(class, hwy, .fun = median)) %&gt;% 
+  ggplot(aes(x = class, y = hwy)) +
+  geom_boxplot(fill = "#25B6EE", alpha = 0.7) +
+  coord_flip() +
+  labs(y = "Highway MPG",
+       x = NULL,
+       title = "Fuel Efficiency by Vehicle Class",
+       subtitle = "Ordered by median MPG")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-6-1.png" width="720" /&gt;
+---
+
+# Add Individual Points
+
+
+``` r
+mpg %&gt;% 
+  mutate(class = fct_reorder(class, hwy, .fun = median)) %&gt;% 
+  ggplot(aes(x = class, y = hwy)) +
+  geom_boxplot(fill = "#25B6EE", alpha = 0.7, outlier.shape = NA) +
+  geom_jitter(width = 0.2, alpha = 0.3, size = 1) +
+  coord_flip() +
+  labs(y = "Highway MPG",
+       x = NULL,
+       title = "Fuel Efficiency by Vehicle Class")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-7-1.png" width="720" /&gt;
+---
+# Violin Plots
+
+Show the full distribution
+
+
+``` r
+mpg %&gt;% 
+  mutate(class = fct_reorder(class, hwy, .fun = median)) %&gt;% 
+  ggplot(aes(x = class, y = hwy)) +
+  geom_violin(fill = "#25B6EE", alpha = 0.7) +
+  geom_boxplot(width = 0.2, fill = "white", alpha = 0.8) +
+  coord_flip() +
+  labs(y = "Highway MPG",
+       x = NULL,
+       title = "Distribution of Fuel Efficiency by Vehicle Class")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-8-1.png" width="720" /&gt;
+
+---
+# Ridgeline Plots
+
+
+
+``` r
+library(ggridges)
+
+ggplot(mpg, aes(x = hwy, y = class, fill = class)) +
+  geom_density_ridges(alpha = 0.7, scale = 0.9) +
+  scale_fill_viridis_d() +
+  labs(x = "Highway MPG",
+       y = NULL,
+       title = "Distribution of Fuel Efficiency by Vehicle Class") +
+  theme(legend.position = "none")
+```
+---
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-9-1.png" width="720" /&gt;
+
+---
+# Faceting for Multiple Categories
+
+
+``` r
+ggplot(mpg, aes(x = cyl, y = hwy)) +
+  geom_boxplot(aes(group = cyl, fill = factor(cyl))) +
+  facet_wrap(~ drv, labeller = label_both) +
+  scale_fill_viridis_d() +
+  labs(x = "Number of Cylinders",
+       y = "Highway MPG",
+       title = "Fuel Efficiency by Cylinders and Drive Type") +
+  theme(legend.position = "none")
+```
+---
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-10-1.png" width="720" /&gt;
+---
+# Small Multiples: Time Series
+
+
+``` r
+library(gapminder)
+
+gapminder %&gt;% 
+  filter(country %in% c("United States", "China", "India", 
+                        "Germany", "Brazil", "Nigeria")) %&gt;% 
+  ggplot(aes(x = year, y = gdpPercap)) +
+  geom_line(color = "#0072B2", size = 1) +
+  geom_point(size = 2, color = "#0072B2") +
+  facet_wrap(~ country, scales = "free_y") +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(x = "Year",
+       y = "GDP per Capita",
+       title = "Economic Growth Across Countries")+
+theme(axis.text.x = element_text(size = 8, angle = 45, hjust = 1))
+```
+
+---
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-11-1.png" width="864" /&gt;
+
+---
+# Small Multiples: Better Layout
+
+``` r
+# First, identify top 4 countries per continent in 2007
+top_countries &lt;- gapminder %&gt;% 
+  filter(year == 2007) %&gt;% 
+  group_by(continent) %&gt;% 
+  slice_max(gdpPercap, n = 4) %&gt;% 
+  pull(country)
+
+# Then filter gapminder to just those countries across all years
+gapminder %&gt;% 
+  filter(country %in% top_countries) %&gt;% 
+  mutate(country = fct_reorder(country, gdpPercap, .fun = max)) %&gt;% 
+  ggplot(aes(x = year, y = gdpPercap)) +
+  geom_line(color = "#0072B2", size = 1) +
+  geom_point(size = 2, color = "#0072B2") +
+  facet_wrap(~ country, scales = "free_y", ncol = 4) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(x = "Year",
+       y = "GDP per Capita",
+       title = "Top 4 Countries by GDP per Capita in Each Continent (2007)")
+```
+---
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-12-1.png" width="864" /&gt;
+
+---
+# Axes
+* Cartesian coordinates - what we generally use
+
+&lt;img src="w5_files/figure-html/cartesian1-1.png" width="100%" /&gt;
+
+---
+# Different units
+
+&lt;img src="w5_files/figure-html/temp_plot-1.png" width="100%" /&gt;
+
+---
+# Aspect ratio
+
+&lt;img src="w5_files/figure-html/aspect-ratio-1.png" width="100%" height="100%" /&gt;
+
+---
+background-image: url("http://socviz.co/dataviz-pdfl_files/figure-html4/ch-01-perception-curves-1.png")
+background-size: contain
+
+---
+# Same scales
+Use `coord_fixed()`
+
+&lt;img src="w5_files/figure-html/same-scales-1.png" width="720" /&gt;
+
+--
+Note - I think this is a weird plot, but the point remains
+
+---
+# Changing aspect ratio
+* Explore how your plot will look in its final size
+
+* No hard/fast rules (if on different scales)
+
+* Not even really rules of thumb
+
+* Keep visual perception in mind
+
+* Try your best to be truthful - show the trend/relation, but don't
+exaggerate/hide it
+
+---
+# Gist
+(side note: gists are a good way to share things)
+
+* See the full code/example [here](https://gist.github.com/tjmahr/1dd36d78ecb3cff10baf01817a56e895)
+
+* You can use that link to play around:
+
+  + Create a plot (could even be the example in the gist)
+
+  + Try different aspect ratios by changing the width/length
+
+---
+class: inverse-orange middle
+# Scale transformations
+
+---
+
+
+
+# Raw scale
+
+
+``` r
+library(gapminder)
+ggplot(gapminder, aes(year, gdpPercap)) +
+  geom_line(aes(group = country),
+            color = "gray70")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-13-1.png" width="720" /&gt;
+---
+
+### Log10 scale
+
+
+``` r
+ggplot(gapminder, aes(year, gdpPercap)) +
+  geom_line(aes(group = country),
+            color = "gray70") +
+* scale_y_log10(labels = scales::dollar)
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-14-1.png" width="720" /&gt;
+
+---
+&lt;br/&gt;
+&lt;br/&gt;
+
+&lt;img src="w5_files/figure-html/scale_transform3-1.png" width="1080" /&gt;
+
+---
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+&lt;img src="w5_files/figure-html/scale_transform4-1.png" width="1080" /&gt;
+
+
+
+---
+# Scales
+
+
+``` r
+d &lt;- tibble(x = c(1, 3.16, 10, 31.6, 100),
+            log_x = log10(x))
+
+ggplot(d, aes(x, 1)) +
+  geom_point(color = "#0072B2")
+
+ggplot(d, aes(x, 1)) +
+  geom_point(color = "#0072B2") +
+  scale_x_log10()
+
+ggplot(d, aes(log_x, 1)) +
+  geom_point(color = "#0072B2") 
+```
+
+---
+# Scales
+
+&lt;img src="w5_files/figure-html/labeling-non-linear2-1.png" width="720" /&gt;&lt;img src="w5_files/figure-html/labeling-non-linear2-2.png" width="720" /&gt;&lt;img src="w5_files/figure-html/labeling-non-linear2-3.png" width="720" /&gt;
+
+---
+# Don't transform twice
+
+&lt;style type="text/css"&gt;
+.code-bg-red .remark-code, .code-bg-red .remark-code * {
+ background-color: #ffe0e0 !important;
+}
+&lt;/style&gt;
+
+.code-bg-red[
+
+``` r
+ggplot(d, aes(log_x, 1)) +
+  geom_point(color = "#0072B2") +
+  scale_x_log10() +
+  coord_cartesian(xlim = c(1, 100))
+```
+
+&lt;img src="w5_files/figure-html/bad-log-1.png" width="720" /&gt;
+]
+
+---
+# Other common transformations
+
+* `scale_*_sqrt()`: Square-root scale
+  
+* `scale_*_reverse()`: Reverse scale
+
+
+``` r
+ggplot(economics, aes(date, unemploy)) +
+  geom_line() +
+  scale_y_reverse()
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-16-1.png" width="720" /&gt;
+
+---
+# Date scales
+
+
+``` r
+ggplot(economics, aes(date, unemploy)) +
+  geom_line()
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-17-1.png" width="720" /&gt;
+---
+# Customize date breaks
+
+
+``` r
+ggplot(economics, aes(date, unemploy)) +
+  geom_line() +
+  scale_x_date(date_breaks = "10 years",
+               date_labels = "%Y")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-18-1.png" width="720" /&gt;
+---
+# More date customization
+
+
+``` r
+ggplot(economics, aes(date, unemploy)) +
+  geom_line() +
+  scale_x_date(date_breaks = "5 years",
+               date_labels = "%b\n%Y")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-19-1.png" width="720" /&gt;
+---
+class: inverse-orange middle
+# Color Scales for Comparing Categories
+
+---
+# Choosing Colors for Categories
+
+Key principles:
+* **Distinct**: Colors should be easily distinguishable
+* **Accessible**: Consider colorblindness (8% of males, 0.5% of females)
+* **Meaningful**: Colors can carry meaning (red = danger, green = success)
+* **Limited**: Use 3-7 colors maximum for discrete categories
+
+---
+class: inverse-red middle
+# Annotations
+
+Please follow along with code
+
+---
+# Why annotate?
+
+* Direct labels often better than legends
+* Highlight important features
+* Provide context
+* Tell the story in your data
+* Guide the reader's attention
+
+---
+# Reference lines
+
+
+``` r
+mpg %&gt;% 
+  group_by(class) %&gt;% 
+  summarize(mean_hwy = mean(hwy)) %&gt;% 
+  mutate(class = fct_reorder(class, mean_hwy)) %&gt;% 
+  ggplot(aes(x = mean_hwy, y = class)) +
+  geom_col(fill = "#25B6EE") +
+  geom_vline(xintercept = mean(mpg$hwy), 
+             linetype = "dashed", 
+             color = "red", 
+             size = 1) +
+  labs(x = "Mean Highway MPG",
+       y = NULL,
+       title = "Fuel Efficiency by Vehicle Class",
+       subtitle = "Red line shows overall average")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-20-1.png" width="720" /&gt;
+
+---
+# Shaded regions
+
+
+``` r
+ggplot(economics, aes(x = date, y = unemploy)) +
+  annotate("rect", 
+           xmin = as.Date("2007-12-01"), 
+           xmax = as.Date("2009-06-01"),
+           ymin = -Inf, 
+           ymax = Inf,
+           fill = "red", 
+           alpha = 0.2) +
+  geom_line(size = 1, color = "#0072B2") +
+  labs(x = "Year",
+       y = "Unemployed (thousands)",
+       title = "US Unemployment Over Time",
+       subtitle = "Shaded region shows Great Recession (Dec 2007 - Jun 2009)")
+```
+
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-21-1.png" width="720" /&gt;
+---
+# Text annotations
+
+
+``` r
+high_points &lt;- economics %&gt;% 
+  filter(unemploy &gt; 12000)
+
+ggplot(economics, aes(x = date, y = unemploy)) +
+  geom_line(size = 1, color = "#0072B2") +
+  geom_point(data = high_points, 
+             size = 3, 
+             color = "red") +
+  annotate("text", 
+           x = as.Date("2009-10-01"), 
+           y = 15000,
+           label = "Peak unemployment\nduring Great Recession",
+           hjust = 0.5,
+           size = 5) +
+  labs(x = "Year",
+       y = "Unemployed (thousands)")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-22-1.png" width="720" /&gt;
+
+---
+# Using geom_text
+
+
+``` r
+mpg %&gt;% 
+  group_by(class) %&gt;% 
+  summarize(mean_hwy = mean(hwy),
+            n = n()) %&gt;% 
+  mutate(class = fct_reorder(class, mean_hwy)) %&gt;% 
+  ggplot(aes(x = mean_hwy, y = class)) +
+  geom_col(fill = "#25B6EE", alpha = 0.7) +
+  geom_text(aes(label = round(mean_hwy, 1)),
+            hjust = -0.2,
+            size = 5) +
+  xlim(0, 35) +
+  labs(x = "Mean Highway MPG",
+       y = NULL)
+```
+---
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-23-1.png" width="720" /&gt;
+
+---
+# ggrepel for non-overlapping labels
+
+
+``` r
+library(ggrepel)
+
+mpg_labeled &lt;- mpg %&gt;% 
+  filter(hwy &gt; 40 | displ &gt; 6.5)
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(color = "gray70") +
+  geom_point(data = mpg_labeled, color = "#D55E00", size = 3) +
+  geom_text_repel(data = mpg_labeled,
+                  aes(label = paste(manufacturer, model)),
+                  size = 4) +
+  labs(x = "Engine Displacement (L)",
+       y = "Highway MPG",
+       title = "Highlighting Extreme Vehicles")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-24-1.png" width="720" /&gt;
+---
+# Arrows and segments
+
+
+``` r
+annotation_data &lt;- tibble(
+  x = 6, y = 35,
+  xend = 5.7, yend = 27,
+  label = "Volkswagen Jetta"
+)
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.5) +
+  geom_curve(data = annotation_data,
+             aes(x = x, y = y, xend = xend, yend = yend),
+             arrow = arrow(length = unit(0.3, "cm")),
+             curvature = 0.3,
+             color = "red",
+             size = 1) +
+  annotate("text", 
+           x = 6, 
+           y = 37,
+           label = "Volkswagen Jetta\nGood efficiency despite\nlarger engine",
+           hjust = 0.5,
+           size = 4)
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-25-1.png" width="720" /&gt;
+
+---
+# Direct labels with gghighlight
+
+
+``` r
+library(gghighlight)
+
+gapminder %&gt;% 
+  filter(country %in% c("United States", "China", "India", 
+                        "Germany", "Brazil", "Nigeria")) %&gt;% 
+  ggplot(aes(x = year, y = gdpPercap, color = country)) +
+  geom_line(size = 1.5) +
+  gghighlight(use_direct_label = TRUE,
+              label_params = list(size = 5)) +
+  scale_y_log10(labels = scales::dollar) +
+  labs(x = "Year",
+       y = "GDP per Capita",
+       title = "Economic Growth in Six Countries") +
+  theme(legend.position = "none")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-26-1.png" width="720" /&gt;
+
+---
+class: inverse-red center middle
+# Themes in Detail
+
+---
+# Built-in Themes
+
+ggplot2 comes with 8 complete themes:
+
+
+``` r
+theme_gray()     # Default
+theme_bw()       # Black and white
+theme_minimal()  # Minimal
+theme_classic()  # Classic
+theme_light()    # Light
+theme_dark()     # Dark
+theme_void()     # Void (no axes)
+theme_test()     # For visual unit tests
+```
+
+---
+# theme_gray() - Default
+
+
+``` r
+p &lt;- ggplot(mpg, aes(x = displ, y = hwy, color = factor(cyl))) +
+  geom_point(size = 3) +
+  labs(title = "theme_gray() - Default theme")
+
+p + theme_gray()
+```
+&lt;img src="w5_files/figure-html/unnamed-chunk-27-1.png" width="720" /&gt;
+
+---
+# theme_bw()
+
+
+``` r
+p + theme_bw() +
+  labs(title = "theme_bw() - Black and white")
+```
+&lt;img src="w5_files/figure-html/unnamed-chunk-28-1.png" width="720" /&gt;
+
+---
+# theme_minimal()
+
+
+``` r
+p + theme_minimal() +
+  labs(title = "theme_minimal() - Minimal styling")
+```
+&lt;img src="w5_files/figure-html/unnamed-chunk-29-1.png" width="720" /&gt;
+---
+# theme_classic()
+
+
+
+``` r
+p + theme_classic() +
+  labs(title = "theme_classic() - Classic look with axes")
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-30-1.png" width="720" /&gt;
+---
+# theme_light()
+
+
+
+``` r
+p + theme_light() +
+  labs(title = "theme_light() - Light gray lines")
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-31-1.png" width="720" /&gt;
+
+---
+# theme_dark()
+
+
+``` r
+p + theme_dark() +
+  labs(title = "theme_dark() - Dark background")
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-32-1.png" width="720" /&gt;
+
+---
+# theme_void()
+
+
+``` r
+p + theme_void() +
+  labs(title = "theme_void() - No axes or background")
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-33-1.png" width="720" /&gt;
+
+---
+# Setting a Default Theme
+
+
+``` r
+# At the beginning of your script
+theme_set(theme_minimal(base_size = 14))
+
+# Now all plots will use this theme
+ggplot(mpg, aes(x = class)) +
+  geom_bar(fill = "#25B6EE") +
+  labs(title = "This uses our default theme")
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-34-1.png" width="720" /&gt;
+
+---
+# Theme Element Functions
+
+Four main functions for theme elements:
+
+* `element_text()`: Text elements (axis labels, titles, etc.)
+* `element_line()`: Line elements (axis lines, grid lines)
+* `element_rect()`: Rectangle elements (plot background, panel background)
+* `element_blank()`: Remove element completely
+
+---
+# Customizing Text Elements
+
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  labs(title = "Customized Text Elements",
+       subtitle = "Engine displacement vs. Highway MPG") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 20, face = "bold", color = "#0072B2"),
+    plot.subtitle = element_text(size = 14, face = "italic", color = "gray50"),
+    axis.title = element_text(size = 14, face = "bold"),
+    axis.text = element_text(size = 12, color = "gray30")
+  )
+```
+---
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-35-1.png" width="720" /&gt;
+
+---
+# Customizing Lines
+
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_line(color = "#0072B2", size = 0.5, linetype = "dashed"),
+    panel.grid.minor = element_line(color = "gray80", size = 0.25),
+    axis.line = element_line(color = "black", size = 1)
+  ) +
+  labs(title = "Customized Grid Lines")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-36-1.png" width="720" /&gt;
+
+---
+# Customizing Rectangles
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(color = "white", size = 3) +
+  labs(title = "Dark Theme with Custom Background") +
+  theme_minimal() +
+  theme(
+    plot.background = element_rect(fill = "#2c3e50", color = NA),
+    panel.background = element_rect(fill = "#34495e", color = NA),
+    panel.grid.major = element_line(color = "#7f8c8d", size = 0.3),
+    panel.grid.minor = element_blank(),
+    text = element_text(color = "white"),
+    axis.text = element_text(color = "white"),
+    plot.title = element_text(size = 16, face = "bold", color = "white")
+  )
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-37-1.png" width="720" /&gt;
+
+---
+# Removing Elements
+
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(size = 3, color = "#0072B2") +
+  labs(title = "Minimal Theme - Elements Removed") +
+  theme_minimal() +
+  theme(
+    panel.grid.minor = element_blank(),  # Remove minor grid
+    panel.grid.major.x = element_blank(), # Remove vertical grid
+    axis.title.x = element_blank(),       # Remove x-axis title
+    legend.position = "none"              # Remove legend
+  )
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-38-1.png" width="720" /&gt;
+
+---
+# Legend Customization
+
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy, color = factor(cyl))) +
+  geom_point(size = 3) +
+  labs(title = "Customized Legend",
+       color = "Cylinders") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.background = element_rect(fill = "gray95", color = "black"),
+    legend.key = element_rect(fill = "white"),
+    legend.title = element_text(face = "bold", size = 12),
+    legend.text = element_text(size = 10)
+  )
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-39-1.png" width="720" /&gt;
+
+
+---
+# Legend Position Options
+
+
+``` r
+p_base &lt;- ggplot(mpg, aes(x = displ, y = hwy, color = factor(cyl))) +
+  geom_point(size = 2) +
+  scale_color_viridis_d()
+
+p1 &lt;- p_base + theme(legend.position = "top") + labs(title = "top")
+p2 &lt;- p_base + theme(legend.position = "bottom") + labs(title = "bottom")
+p3 &lt;- p_base + theme(legend.position = "left") + labs(title = "left")
+p4 &lt;- p_base + theme(legend.position = "right") + labs(title = "right")
+
+(p1 + p2) / (p3 + p4)
+```
+
+&lt;img src="w5_files/figure-html/legend-positions-1.png" width="720" /&gt;
+
+---
+# Facet Customization
+
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_wrap(~ class, nrow = 2) +
+  theme_minimal() +
+  theme(
+    strip.background = element_rect(fill = "#0072B2", color = NA),
+    strip.text = element_text(color = "white", size = 12, face = "bold"),
+    panel.spacing = unit(1, "lines"),
+    panel.border = element_rect(color = "gray70", fill = NA)
+  ) +
+  labs(title = "Customized Facet Strips")
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-40-1.png" width="720" /&gt;
+---
+class: inverse-blue
+# Data viz in Wild
+
+Chen 
+
+Tongle
+
+### Everett and Dodjivi on deck for next week
+
+---
+&lt;img src="w5_files/figure-html/diff-themes-1.png" width="720" /&gt;
+
+---
+# ggthemes Package
+
+
+``` r
+library(ggthemes)
+
+p &lt;- ggplot(mpg, aes(x = displ, y = hwy, color = factor(cyl))) +
+  geom_point(size = 3)
+
+p + theme_economist() + 
+  scale_color_economist() +
+  labs(title = "theme_economist()")
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-41-1.png" width="720" /&gt;
+
+---
+# More ggthemes Examples
+
+
+``` r
+p + theme_wsj() + 
+  scale_color_wsj() +
+  labs(title = "theme_wsj() - Wall Street Journal") +
+  theme(plot.title = element_text(size = 16))
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-42-1.png" width="720" /&gt;
+
+---
+# FiveThirtyEight Theme
+
+
+``` r
+p + theme_fivethirtyeight() + 
+  scale_color_fivethirtyeight() +
+  labs(title = "theme_fivethirtyeight()") +
+  theme(plot.title = element_text(size = 16))
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-43-1.png" width="720" /&gt;
+---
+# Tufte Theme (Minimal)
+
+
+``` r
+p + theme_tufte() +
+  labs(title = "theme_tufte() - Minimalist Tufte style")
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-44-1.png" width="720" /&gt;
+
+---
+# BBC
+The BBC uses ggplot for most of its graphics. They've developed a package with a theme and some functions to help make it match their style more.
+
+See the repo [here](https://github.com/bbc/bbplot)
+
+Their [Journalism Cookbook](https://bbc.github.io/rcookbook/) is really nice too
+
+---
+background-image: url(https://github.com/bbc/bbplot/raw/master/chart_examples/bbplot_example_plots.png)
+background-size: contain
+
+---
+# Similarly, the Urban Institute Visual Guide
+
+See the repo [here](https://github.com/UrbanInstitute/urbnthemes)
+---
+# So, I created one! 
+
+* Based on UO's visual guide [here](https://communications.uoregon.edu/uo-brand/visual-identity/colors)
+
+[demo]
+
+
+---
+# Creating Your Own Theme
+
+
+``` r
+theme_maithreyi &lt;- function(base_size = 14) {
+  theme_minimal(base_size = base_size) +
+  theme(
+    # Text elements scaled relative to base_size
+    plot.title = element_text(
+      size = base_size * 1.3, 
+      face = "bold", 
+      color = "#2c3e50",
+      hjust = 0
+    ),
+    
+    plot.subtitle = element_text(
+      size = base_size * 0.9, 
+      face = "italic", 
+      color = "gray40",
+      hjust = 0
+    ),
+    
+    axis.title = element_text(
+      size = base_size * 1.0, 
+      face = "bold"
+    ),
+    
+    axis.text = element_text(
+      size = base_size * 0.8
+    ),
+    
+    # Grid - minimal but present
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(
+      color = "gray85", 
+      size = 0.3
+    ),
+    
+    # Background
+    plot.background = element_rect(
+      fill = "white", 
+      color = NA
+    ),
+    
+    panel.background = element_rect(
+      fill = "gray98", 
+      color = NA
+    ),
+    
+    # Legend
+    legend.position = "top",
+    legend.title = element_text(
+      size = base_size * 0.9, 
+      face = "bold"
+    ),
+    legend.text = element_text(
+      size = base_size * 0.8
+    ),
+    
+    # Caption
+    plot.caption = element_text(
+      size = base_size * 0.7, 
+      color = "gray50", 
+      hjust = 0
+    )
+  )
+}
+```
+
+---
+# Using Your Custom Theme
+
+
+``` r
+ggplot(mpg, aes(x = displ, y = hwy, color = factor(cyl))) +
+  geom_point(size = 3) +
+  labs(title = "My Custom Theme",
+       subtitle = "Engine displacement vs. Highway MPG",
+       x = "Engine Displacement (L)",
+       y = "Highway MPG",
+       color = "Cylinders") +
+  theme_maithreyi()
+```
+---
+&lt;img src="w5_files/figure-html/unnamed-chunk-45-1.png" width="720" /&gt;
+
+---
+# ggthemeassist 
+* Another great place to start with making major modifications/creating your own custom theme
+* Can't do everything, but can do a lot
+* See [here](https://github.com/calligross/ggthemeassist)
+
+[demo]
+
+
+---
+# `theme()` for everything else
+* You can basically change your plot to look however you want through `theme`
+* Generally a bit more complicated
+* I've used ggplot for *years* and only really now gaining fluency with it
+
+---
+class: inverse-orange middle
+# Putting It All Together
+
+---
+# Best Practices: Comparing Categories
+
+1. **Order thoughtfully**: By value, time, or logic (not alphabetically)
+2. **Use appropriate chart type**: Bars for counts, dots for many categories
+3. **Consider faceting**: For multiple grouping variables
+4. **Highlight what matters**: Use color strategically
+5. **Annotate directly**: Labels often better than legends
+6. **Maintain consistency**: Same colors across related charts
+
+---
+# Example: Poor Practice
+
+
+``` r
+mpg %&gt;% 
+  count(class, drv) %&gt;% 
+  ggplot(aes(x = class, y = n, fill = drv)) +
+  geom_col() +
+  scale_fill_manual(values = c("red", "blue", "green")) +
+  theme_gray()
+```
+
+&lt;img src="w5_files/figure-html/unnamed-chunk-46-1.png" width="720" /&gt;
+Problems: Stacked bars hard to compare, random colors, alphabetical ordering
+
+---
+# Last Quick example
+The *google_trends* dataset comes from a [fivethirtyeight story](https://fivethirtyeight.com/features/the-media-really-started-paying-attention-to-puerto-rico-when-trump-did/) about how the media covered hurricanes and Trump.
+
+
+``` r
+library(fivethirtyeight)
+g &lt;- google_trends %&gt;% 
+  pivot_longer(starts_with("hurricane"), 
+               names_to = "hurricane", 
+               values_to = "interest",
+               names_pattern = "_(.+)_")
+
+landfall &lt;- tibble(
+  date = lubridate::mdy(
+    c("August 25, 2017", "September 10, 2017", "September 20, 2017")
+  ),
+  hurricane = c("Harvey Landfall", "Irma Landfall", "Maria Landfall")
+)
+```
+
+---
+Let's start by visualizing the change in trends for each hurricane over time in one plot with three scales. We can map color to a discrete scale here. We can add vertical lines to show when each of them made landfall!
+
+
+``` r
+p &lt;- ggplot(g, aes(date, interest)) +
+  geom_ribbon(aes(fill = hurricane, ymin = 0, ymax = interest),
+              alpha = 0.6) + 
+  geom_vline(aes(xintercept = date), landfall,
+             color = "gray80", 
+             lty = "dashed") +
+  geom_text(aes(x = date, y = 80, label = hurricane), landfall,
+            color = "gray80",
+            nudge_x = 0.5, 
+            hjust = 0) +
+  labs(x = "", 
+       y = "Google Trends",
+       title = "Hurricane Google trends over time",
+       caption = "Source: https://github.com/fivethirtyeight/data/tree/master/puerto-rico-media") + 
+  scale_fill_brewer("Hurricane", palette = "Set2")
+```
+
+---
+&lt;img src="w5_files/figure-html/baseplot-eval-1.png" width="720" /&gt;
+
+
+---
+We can use ggthemeassist to make a whole bunch of changes! 
+
+
+``` r
+p + theme(
+  panel.grid.major = element_line(colour = "gray30"), 
+  panel.grid.minor = element_line(colour = "gray30"), 
+  axis.text = element_text(colour = "gray80"), 
+  axis.text.x = element_text(colour = "gray80"), 
+  axis.text.y = element_text(colour = "gray80"),
+  axis.title = element_text(colour = "gray80"),
+  legend.text = element_text(colour = "gray80"), 
+  legend.title = element_text(colour = "gray80"), 
+  panel.background = element_rect(fill = "gray10"), 
+  plot.background = element_rect(fill = "gray10"), 
+  legend.background = element_rect(fill = NA, color = NA), 
+  legend.position = c(0.2, -0.1), 
+  legend.direction = "horizontal",
+  plot.margin = margin(10, 10, b = 20, 10),
+  plot.caption = element_text(colour = "gray80", vjust = 1), 
+  plot.title = element_text(colour = "gray80")
+)
+```
+
+---
+class: inverse-orange middle
+# Saving Plots
+
+---
+# The ggsave() function
+
+Basic usage:
+
+
+``` r
+p &lt;- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+
+ggsave("my_plot.png", p, width = 8, height = 6, dpi = 300)
+```
+
+---
+# Common ggsave() arguments
+
+* `filename`: Path and filename (extension determines format)
+* `plot`: Plot object (defaults to last plot)
+* `width`, `height`: Dimensions in `units`
+* `units`: "in" (default), "cm", or "mm"
+* `dpi`: Resolution (300 for print, 96 for screen)
+* `device`: File type ("png", "pdf", "jpeg", "tiff", etc.)
+
+---
+# Different file formats
+
+
+``` r
+# PNG for web/presentations
+ggsave("figure1.png", width = 8, height = 6, dpi = 300)
+
+# PDF for publications (vector, scalable)
+ggsave("figure1.pdf", width = 8, height = 6)
+
+# JPEG (smaller file size, lossy compression)
+ggsave("figure1.jpg", width = 8, height = 6, dpi = 300)
+
+# TIFF for publications (lossless)
+ggsave("figure1.tiff", width = 8, height = 6, dpi = 300)
+
+# SVG (vector, for web)
+ggsave("figure1.svg", width = 8, height = 6)
+```
+
+---
+# Aspect ratios for different uses
+
+
+``` r
+# Widescreen presentation (16:9)
+ggsave("presentation.png", width = 10, height = 5.625, dpi = 150)
+
+# Square for Instagram
+ggsave("instagram.png", width = 6, height = 6, dpi = 300)
+
+# Journal figure (often 3.5" or 7" wide)
+ggsave("journal.pdf", width = 7, height = 5)
+
+# Poster (large format)
+ggsave("poster.pdf", width = 24, height = 36, dpi = 300)
+```
+
+---
+# Setting defaults
+
+
+``` r
+# Create custom save function
+save_plot &lt;- function(filename, plot = last_plot()) {
+  ggsave(
+    filename = filename,
+    plot = plot,
+    width = 8,
+    height = 6,
+    dpi = 300,
+    bg = "white"  # Ensures white background
+  )
+}
+
+# Use it
+p &lt;- ggplot(mpg, aes(x = displ, y = hwy)) + geom_point()
+save_plot("my_figure.png", p)
+```
+
+---
+# Saving plots for publication
+
+
+``` r
+# High resolution, multiple formats
+p &lt;- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  theme_minimal(base_size = 12)
+
+# For manuscript
+ggsave("figure1_main.pdf", p, width = 7, height = 5)
+ggsave("figure1_main.png", p, width = 7, height = 5, dpi = 600)
+
+# For supplement (might be different size)
+ggsave("figureS1.pdf", p, width = 8.5, height = 11)
+```
+
+---
+# The preview trick
+
+
+``` r
+# From TJ Mahr - preview exact output size
+ggpreview &lt;- function(..., device = "png") {
+  fname &lt;- tempfile(fileext = paste0(".", device))
+  ggsave(filename = fname, device = device, ...)
+  system2("open", fname)  # Mac
+  # Use shell.exec(fname) on Windows
+  invisible(NULL)
+}
+
+# Preview at exact journal dimensions
+ggpreview(width = 3.5, height = 3.5, dpi = 300)
+```
+
+---
+# Editing in external programs
+
+Sometimes you need to make final tweaks outside R:
+
+* **Inkscape** (free): Vector editing of PDFs/SVGs
+* **Adobe Illustrator**: Professional vector editing
+* **GIMP** (free): Raster image editing
+* **PowerPoint**: Quick annotations and combinations
+
+I rarely do this, but if I do, I tend to use [Inkscape](https://inkscape.org/), which is free.
+
+
+
+``` r
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(color = "gray80") +
+  geom_point(color = "#FD7A43", data = filter(mpg, cyl == 4))
+
+ggsave("~/Desktop/example-plot.pdf", width = 6.5, height = 6.5)
+```
+
+
+---
+class: inverse-red middle
+
+# Compound figures
+
+Please follow along
+
+---
+# Options
+My favorite: [{patchwork}](https://patchwork.data-imaginist.com/index.html)
+
+
+--
+
+Others:
+
+* [{cowplot}](https://wilkelab.org/cowplot/index.html)
+
+* [{ggpubr}](https://github.com/kassambara/ggpubr/)
+
+* [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
+
+
+---
+# Example
+
+* First, create two plots
+
+
+``` r
+p1 &lt;- ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = factor(cyl))) +
+  geom_smooth() +
+  scale_color_OkabeIto()
+
+p2 &lt;- ggplot(mpg, aes(factor(cyl), hwy)) +
+  geom_boxplot(aes(fill = factor(cyl))) +
+  scale_fill_OkabeIto()
+```
+
+---
+# Side by side
+
+
+``` r
+library(patchwork)
+p1 + p2
+```
+
+&lt;img src="w5_files/figure-html/patchwork-sidebyside-1.png" width="720" /&gt;
+
+---
+# Collect legends
+
+
+``` r
+p1 + p2 + plot_layout(guides = "collect")
+```
+
+&lt;img src="w5_files/figure-html/patchwork-legends-1.png" width="720" /&gt;
+
+
+---
+# Stack vertically
+
+
+``` r
+p1 / p2 + plot_layout(guides = "collect")
+```
+
+&lt;img src="w5_files/figure-html/patchwork-stack-1.png" width="720" /&gt;
+
+---
+# Add a third plot
+
+
+``` r
+p3 &lt;- mpg %&gt;% 
+  group_by(manufacturer) %&gt;% 
+  summarize(mean_mpg = mean(hwy, na.rm = TRUE)) %&gt;% 
+  mutate(manufacturer = fct_reorder(manufacturer, mean_mpg)) %&gt;% 
+  ggplot(aes(mean_mpg, manufacturer)) +
+    geom_col(fill = "#25B6EE") +
+    theme(axis.text.y = element_text(size = 12))
+```
+
+---
+# Put box plot on bottom
+
+
+``` r
+(p1 + p3) / p2 + plot_layout(guides = "collect")
+```
+
+&lt;img src="w5_files/figure-html/patchwork-complex-1.png" width="720" /&gt;
+
+
+---
+# Overall title
+
+``` r
+(p1 + p3) / p2 + plot_layout(guides = "collect") +
+  plot_annotation("Some cool plots")
+```
+
+&lt;img src="w5_files/figure-html/patchwork-title-1.png" width="720" /&gt;
+
+---
+# Tags
+
+``` r
+(p1 + p3) / p2 + plot_layout(guides = "collect") +
+  plot_annotation("Some cool plots", tag_levels = "a")
+```
+
+&lt;img src="w5_files/figure-html/patchwork-tags-1.png" width="720" /&gt;
+
+
+---
+# Insets
+
+
+``` r
+p3_small_txt &lt;- p3 +
+  theme(axis.text.y = element_text(size = 8),
+        text = element_text(size = 8))
+
+p1 + inset_element(p3_small_txt, 0.6, 0.6, 1, 1)
+```
+
+&lt;img src="w5_files/figure-html/patchwork-insets-1.png" width="720" /&gt;
+
+
+---
+# Complex Layouts with patchwork
+
+
+``` r
+p4 &lt;- ggplot(mpg, aes(x = year, y = hwy)) +
+  geom_boxplot(aes(group = year, fill = factor(year))) +
+  scale_fill_viridis_d() +
+  theme(legend.position = "none")
+
+layout &lt;- "
+AAB
+CCC
+CCC
+"
+
+p1 + p2 + p4 + 
+  plot_layout(design = layout) +
+  plot_annotation(title = "Complex Custom Layout",
+                  tag_levels = "A")
+```
+---
+# Complex Layouts with patchwork
+
+&lt;img src="w5_files/figure-html/complex-layoutb-1.png" width="720" /&gt;
+
+---
+# Nested Layouts
+
+
+``` r
+top_row &lt;- p1 + p2
+bottom_plot &lt;- p3
+
+top_row / bottom_plot + 
+  plot_layout(heights = c(1, 1.5)) +
+  plot_annotation(title = "Nested Layout Example",
+                  tag_levels = "1")
+```
+
+&lt;img src="w5_files/figure-html/nested-layout-1.png" width="720" /&gt;
+---
+class: inverse-red
+# Lab 3 and Lab 4 Review 
+### + Discussion (if time permits)
+
+---
+class: inverse-red center 
+# Lab PS-3 
+
+### Will be posted tomorrow
+
+---
+class: inverse-blue center middle
+# Lab 5 
+
+---
+class: inverse-green center middle
+# Next time
+### Wrap up visualizing changes over time/distributions and Intro to Websites, Flex dashboards, CSS customizations
+
+Note: Lab-PS3- Last Lab problem set in this class will be posted tomorrow
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"navigation": {
+"scroll": false
+},
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
