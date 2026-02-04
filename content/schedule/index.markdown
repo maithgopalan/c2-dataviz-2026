@@ -128,11 +128,11 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< slides "w5" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< assigned "lab-ps3" "Lab PS3" >}}
+{{< assigned "" "" >}}
 {{< assigned "lab-5" "Lab 5" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< due "lab-ps2" "Lab ps2" >}}
+  {{< due "lab-5" "Lab 5" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< readings "dataviz" "visualizing-amounts.html" "6" >}}
