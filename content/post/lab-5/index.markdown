@@ -66,7 +66,7 @@ Requirements:
 ## Part 2: Theme Customization
 
 ### Task 2.1
-Recreate the final plot you generated in Lab PS-2 showing life expectancy over time for countries in the Americas.
+Creat a plot showing life expectancy over time for countries in the Americas.
 
 Requirements:
 - Filter gapminder to Americas only
