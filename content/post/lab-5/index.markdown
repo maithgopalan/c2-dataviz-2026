@@ -198,7 +198,7 @@ Include the `ggsave()` code in your Rmd file.
 
 ---
 
-## Reflection Questions
+## Reflection Questions (No need to write- we will discuss in class next week)
 
 Answer the following (2-3 sentences each):
 
