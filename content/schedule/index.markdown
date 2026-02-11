@@ -152,7 +152,7 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< week-even "02-11" >}}
   {{< description "Wrap up week 5 + Intro to Flexdashboard" "I will introduce building flexboards" >}}
   {{< wrap >}}
-{{< slides "w6" >}}
+{{< slides "w6_new" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< assigned "" "" >}}
