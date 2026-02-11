@@ -155,10 +155,10 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< slides "w6_new" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< assigned "" "" >}}
+{{< assigned "lab-6" "Lab-6" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< due "" "" >}}
+{{< due "Lab-6" "Lab-6" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< readings "dataviz" "histograms-density-plots.html" "7" >}}
@@ -184,7 +184,7 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< slides "w7" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< assigned "lab-6" "Lab-6" >}}
+{{< assigned "" "" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< due "lab-ps3" "Lab ps3" >}}
