@@ -26,7 +26,7 @@ Each lab problem set is worth 20 points. Please do not turn in partial work. Ins
 
 ## Final Project
 
-The final project includes multiple components and is worth 70 points total (35% of your totalgrade), culminating in a data visualization portfolio. Your final project must be completed in groups of 2-3 and must include at least four data visualizations. You will build a web-deployed product (likely a dashboard or a website with blog posts) that not only displays the final visuals, but also clearly communicates the history of each visualization, how they evolved, and why you made the changes you did. You can use the [course data](../2021-12-10-accessing-the-data/index.html) for this project. The due dates for each component are as follows:
+The final project includes multiple components and is worth 70 points total (35% of your totalgrade), culminating in a data visualization portfolio. Your final project must be completed in groups of 2-3 and must include at least four data visualizations. You will build a web-deployed product (likely a dashboard or a website with blog posts) that not only displays the final visuals, but also clearly communicates the history of each visualization, how they evolved, and why you made the changes you did. The due dates for each component are as follows:
 
 {{< bootstrap-table "table table-hover" >}}
 
@@ -89,7 +89,7 @@ You will likely have 10-12 minutes to share your portfolio, but the exact time a
   + At least 1 major challenge encountered along the way
   + At least 1 major victory
 
-Note that I want to hear about your process as much as the final product. It is expected that not every piece of what you present is finalized. For example, if you are participating in the competition, you don't have to have each visual adhering to the USAFacts style guide at this point. However, you should be most of the way there and ready to share what you've produced.
+Note that I want to hear about your process as much as the final product. It is expected that not every piece of what you present is finalized. However, you should be most of the way there and ready to share what you've produced.
 
 ### Product
 
