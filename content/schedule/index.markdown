@@ -184,15 +184,13 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< slides "w7" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< assigned "" "" >}}
+{{< assigned "lab-7" "Lab-7" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< due "lab-ps3" "Lab ps3" >}}
-{{< due "lab-6" "Lab-6" >}}
+{{< due "lab-7" "Lab-7" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< readings "other" "https://rstudio.github.io/distill/" "distill" >}}
-{{< readings "video" "https://www.youtube.com/watch?v=X7Cl3lwxXi4" "" >}}
 {{< readings "other" "https://docs.github.com/en/get-started/start-your-journey/about-github-and-git" "" >}}
 {{< readings "other" "https://quarto.org/docs/websites/website-blog.html" "Quarto Blog" >}}
 
@@ -212,10 +210,10 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< slides "w8" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< assigned "lab-7" "Lab-7" >}}
+{{< assigned "" "" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< due "lab-7" "Lab-7" >}}
+{{< due "lab-ps3" "Lab ps3" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< readings "socviz" "maps.html" "7" >}}
