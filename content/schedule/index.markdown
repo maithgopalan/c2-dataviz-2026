@@ -185,6 +185,7 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< /wrap >}}
   {{< wrap >}}
 {{< assigned "lab-7" "Lab-7" >}}
+{{< assigned "lab-ps3" "Lab-PS3" >}}
 {{< /wrap >}}
   {{< wrap >}}
 {{< due "lab-7" "Lab-7" >}}
@@ -232,7 +233,7 @@ Each of the below links to the full book, except the last one. I will upload cha
  {{< schedule >}}
 
 {{< week-odd "03-04" >}}
-  {{< description "Wrap up Websites, presentations, and some customization with CSS" "Wrap up building (static) data dashboards with the [{flexdashboard}](https://rmarkdown.rstudio.com/flexdashboard/) package. Finally, we will discuss customization with CSS, and changing the fonts in both web-based documents, as well as ggplot2 plots." >}}
+  {{< description "Wrap up Websites, shiny apps, and some customization with CSS" "Some class presentations and if time permits add visualizing uncertainty">}}
   {{< wrap >}}
 {{< slides "w9" >}}
 {{< /wrap >}}
@@ -240,7 +241,7 @@ Each of the below links to the full book, except the last one. I will upload cha
 {{< assigned "lab-8" "Lab-8-PR" >}}
 {{< /wrap >}}
   {{< wrap >}}
-{{< due "" "" >}}
+{{< due "lab-8" "Lab-8-PR" >}}
 {{< /wrap >}}
   {{< wrap >}}
 
